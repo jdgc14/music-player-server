@@ -51,6 +51,14 @@ const getArtistImg = async (artist) => {
     return imgUrl
 }
 
-const getAllArtistImg = async (artists) => {}
+const getAllArtistImg = async (artists) => {
+    const artistImgPromises = artists.map(async (artist) => {
+        const imgUrl = await getArtistImg(artist)
 
-module.exports = { uploadArtistPhoto, getArtistImg }
+        artist.imgUrl = imgUrl
+    })
+
+    await Promise.all(artistImgPromises)
+}
+
+module.exports = { uploadArtistPhoto, getArtistImg, getAllArtistImg }

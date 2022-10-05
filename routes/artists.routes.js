@@ -4,6 +4,7 @@ const express = require('express')
 const {
     createArtist,
     getArtistById,
+    getArtists,
 } = require('../controllers/artists.controller')
 
 // Middlewares
@@ -28,6 +29,8 @@ artistsRouter.post(
     createArtistValidators,
     createArtist
 )
+
+artistsRouter.get('/', getArtists)
 
 artistsRouter.get('/:id', artistExists, getArtistById)
 

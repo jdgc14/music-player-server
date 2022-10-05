@@ -3,7 +3,11 @@ const { Artist } = require('../models/artist.model')
 
 // Utils
 const { catchAsync } = require('../utils/catchAsync.util')
-const { uploadArtistPhoto, getArtistImg } = require('../utils/firebase.util')
+const {
+    uploadArtistPhoto,
+    getArtistImg,
+    getAllArtistImg,
+} = require('../utils/firebase.util')
 
 // >C< R U D
 const createArtist = catchAsync(async (req, res, next) => {
@@ -25,12 +29,6 @@ const createArtist = catchAsync(async (req, res, next) => {
 })
 
 // C >R< U D
-const getArtists = catchAsync(async (req, res, next) => {
-    const artists = Artist.findAll({
-        where: { status: 'active' },
-    })
-})
-
 const getArtistById = catchAsync(async (req, res, next) => {
     const { artist } = req
 
@@ -44,4 +42,17 @@ const getArtistById = catchAsync(async (req, res, next) => {
     })
 })
 
-module.exports = { createArtist, getArtistById }
+const getArtists = catchAsync(async (req, res, next) => {
+    const artists = await Artist.findAll({
+        where: { status: 'active' },
+    })
+
+    await getAllArtistImg(artists)
+
+    res.status(200).json({
+        status: 'success',
+        data: { artists },
+    })
+})
+
+module.exports = { createArtist, getArtistById, getArtists }
