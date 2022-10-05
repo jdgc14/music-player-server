@@ -6,10 +6,10 @@ const { AppError } = require('../utils/appError.util')
 const { catchAsync } = require('../utils/catchAsync.util')
 
 const artistExists = catchAsync(async (req, res, next) => {
-    const { id } = req.params
+    const id = req.params.id || req.params.artistId
 
     const artist = await Artist.findOne({
-        where: { id },
+        where: { id, status: 'active' },
     })
 
     if (!artist) {

@@ -61,4 +61,30 @@ const getAllArtistImg = async (artists) => {
     await Promise.all(artistImgPromises)
 }
 
-module.exports = { uploadArtistPhoto, getArtistImg, getAllArtistImg }
+const uploadAlbumPhoto = async (img, albumId) => {
+    try {
+        // name.jpg
+        const [filename, extension] = img.originalname.split('.')
+
+        const albumImg = `${
+            process.env.NODE_ENV
+        }/album/${albumId}/${filename}-${Date.now()}.${extension}`
+
+        // Create ref
+        const imgRef = ref(storage, albumImg)
+
+        // Upload img
+        const result = await uploadBytes(imgRef, img.buffer)
+
+        return result.metadata.fullPath
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+module.exports = {
+    uploadArtistPhoto,
+    getArtistImg,
+    getAllArtistImg,
+    uploadAlbumPhoto,
+}

@@ -46,4 +46,33 @@ const createArtistValidators = [
         .withMessage('genre must be at least 3 characters'),
     checkValidations,
 ]
-module.exports = { createUserValidators, createArtistValidators }
+
+const updateArtistValidators = [
+    body('name')
+        .isString()
+        .withMessage('name must be a string')
+        .isLength({ min: 3 })
+        .withMessage('name must be at least 3 characters'),
+    checkValidations,
+]
+
+const createAlbumValidators = [
+    body('title')
+        .isString()
+        .withMessage('title must be a string')
+        .isLength({ min: 3 })
+        .withMessage('title must be at least 3 characters'),
+    body('genre')
+        .isString()
+        .withMessage('genre must be a string')
+        .isLength({ min: 3 })
+        .withMessage('genre must be at least 3 characters'),
+    checkValidations,
+]
+
+module.exports = {
+    createUserValidators,
+    createArtistValidators,
+    updateArtistValidators,
+    createAlbumValidators,
+}
