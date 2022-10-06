@@ -18,11 +18,11 @@ const { songValidators } = require('../middlewares/validators.middlewares')
 
 const songsRouter = express.Router()
 
+songsRouter.get('/:albumId', albumExists, getAlbumSongs)
+
 songsRouter.use(protectSession)
 
 songsRouter.post('/:albumId', albumExists, songValidators, createSong)
-
-songsRouter.get('/:albumId', albumExists, getAlbumSongs)
 
 songsRouter.patch('/:id', songExists, songValidators, updateSongById)
 

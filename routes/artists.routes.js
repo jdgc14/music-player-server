@@ -26,6 +26,10 @@ const { upload } = require('../utils/multer.util')
 
 const artistsRouter = express.Router()
 
+artistsRouter.get('/', getArtists)
+
+artistsRouter.get('/:id', artistExists, getArtistById)
+
 artistsRouter.use(protectSession)
 
 artistsRouter.post(
@@ -34,10 +38,6 @@ artistsRouter.post(
     createArtistValidators,
     createArtist
 )
-
-artistsRouter.get('/', getArtists)
-
-artistsRouter.get('/:id', artistExists, getArtistById)
 
 artistsRouter.patch(
     '/:id',

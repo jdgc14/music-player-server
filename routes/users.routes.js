@@ -19,6 +19,7 @@ const {
 // Validators
 const {
     createUserValidators,
+    updateUserValidators,
 } = require('../middlewares/validators.middlewares')
 
 const usersRouter = express.Router()
@@ -32,7 +33,13 @@ usersRouter.use(protectSession)
 
 usersRouter.get('/', getAllUsers)
 
-usersRouter.patch('/:id', userExists, protectUsersAccount, updateUser)
+usersRouter.patch(
+    '/:id',
+    userExists,
+    protectUsersAccount,
+    updateUserValidators,
+    updateUser
+)
 
 usersRouter.delete('/:id', userExists, protectUsersAccount, deleteUser)
 

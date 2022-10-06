@@ -6,8 +6,8 @@ const dotenv = require('dotenv')
 const { User } = require('../models/user.model')
 
 // Utils
-const { catchAsync } = require('../utils/catchAsync.util')
 const { AppError } = require('../utils/appError.util')
+const { catchAsync } = require('../utils/catchAsync.util')
 
 dotenv.config()
 
@@ -47,10 +47,10 @@ const createUser = catchAsync(async (req, res, next) => {
 })
 
 const updateUser = catchAsync(async (req, res, next) => {
-    const { name } = req.body
+    const { name, email } = req.body
     const { user } = req
 
-    await user.update({ name })
+    await user.update({ name, email })
 
     res.status(200).json({
         status: 'success',

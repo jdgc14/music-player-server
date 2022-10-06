@@ -22,7 +22,7 @@ const createSong = catchAsync(async (req, res, next) => {
 const getAlbumSongs = catchAsync(async (req, res, next) => {
     const id = req.params.albumId
 
-    const album = Album.findOne({
+    const album = await Album.findOne({
         where: { id },
         include: { model: Song },
     })

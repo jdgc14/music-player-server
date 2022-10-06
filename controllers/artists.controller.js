@@ -5,10 +5,9 @@ const { Album } = require('../models/album.model')
 // Utils
 const { catchAsync } = require('../utils/catchAsync.util')
 const {
-    uploadArtistPhoto,
+    uploadPhoto,
     getArtistImg,
     getAllArtistImg,
-    uploadAlbumPhoto,
 } = require('../utils/firebase.util')
 
 // >C< R U D
@@ -20,7 +19,7 @@ const createArtist = catchAsync(async (req, res, next) => {
         genre,
     })
 
-    const imgUrl = await uploadArtistPhoto(req.file, newArtist.id)
+    const imgUrl = await uploadPhoto(req.file, newArtist.id, 'artists')
 
     await newArtist.update({ imgUrl })
 
@@ -47,6 +46,11 @@ const getArtistById = catchAsync(async (req, res, next) => {
 const getArtists = catchAsync(async (req, res, next) => {
     const artists = await Artist.findAll({
         where: { status: 'active' },
+        attributes: { exclude: ['status', 'createdAt', 'updatedAt'] },
+        include: {
+            model: Album,
+            attributes: ['id', 'title', 'genre', 'imgUrl'],
+        },
     })
 
     await getAllArtistImg(artists)
@@ -93,7 +97,7 @@ const createArtistAlbum = catchAsync(async (req, res, next) => {
 
     const newAlbum = await Album.create({ artistId, title, genre })
 
-    const imgUrl = await uploadAlbumPhoto(req.file, newAlbum.id)
+    const imgUrl = await uploadPhoto(req.file, newAlbum.id, 'albums')
 
     await newAlbum.update({ imgUrl })
 

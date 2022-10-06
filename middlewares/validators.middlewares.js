@@ -33,6 +33,16 @@ const createUserValidators = [
     checkValidations,
 ]
 
+const updateUserValidators = [
+    body('name')
+        .isString()
+        .withMessage('name must be a string')
+        .isLength({ min: 3 })
+        .withMessage('name must be at least 3 characters'),
+    body('email').isEmail().withMessage('Must provide a valid email'),
+    checkValidations,
+]
+
 const createArtistValidators = [
     body('name')
         .isString()
@@ -81,6 +91,7 @@ const songValidators = [
 
 module.exports = {
     createUserValidators,
+    updateUserValidators,
     createArtistValidators,
     updateArtistValidators,
     createAlbumValidators,

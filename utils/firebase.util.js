@@ -22,17 +22,16 @@ const firebaseApp = initializeApp(firebaseConfig)
 // Storage service
 const storage = getStorage(firebaseApp)
 
-const uploadArtistPhoto = async (img, artistId) => {
+const uploadPhoto = async (img, id, folderName) => {
     try {
-        // name.jpg
         const [filename, extension] = img.originalname.split('.')
 
-        const artistImg = `${
+        const imgPath = `${
             process.env.NODE_ENV
-        }/artist/${artistId}/${filename}-${Date.now()}.${extension}`
+        }/${folderName}/${id}/${filename}-${Date.now()}.${extension}`
 
         // Create ref
-        const imgRef = ref(storage, artistImg)
+        const imgRef = ref(storage, imgPath)
 
         // Upload img
         const result = await uploadBytes(imgRef, img.buffer)
@@ -61,30 +60,8 @@ const getAllArtistImg = async (artists) => {
     await Promise.all(artistImgPromises)
 }
 
-const uploadAlbumPhoto = async (img, albumId) => {
-    try {
-        // name.jpg
-        const [filename, extension] = img.originalname.split('.')
-
-        const albumImg = `${
-            process.env.NODE_ENV
-        }/album/${albumId}/${filename}-${Date.now()}.${extension}`
-
-        // Create ref
-        const imgRef = ref(storage, albumImg)
-
-        // Upload img
-        const result = await uploadBytes(imgRef, img.buffer)
-
-        return result.metadata.fullPath
-    } catch (err) {
-        console.log(err)
-    }
-}
-
 module.exports = {
-    uploadArtistPhoto,
+    uploadPhoto,
     getArtistImg,
     getAllArtistImg,
-    uploadAlbumPhoto,
 }
