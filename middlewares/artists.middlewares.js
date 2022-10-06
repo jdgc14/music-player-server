@@ -1,4 +1,6 @@
 // Models
+const { Song } = require('../models/song.model')
+const { Album } = require('../models/album.model')
 const { Artist } = require('../models/artist.model')
 
 // Utils
@@ -10,6 +12,12 @@ const artistExists = catchAsync(async (req, res, next) => {
 
     const artist = await Artist.findOne({
         where: { id, status: 'active' },
+        attributes: ['id', 'name', 'genre', 'imgUrl'],
+        include: {
+            model: Album,
+            attributes: ['id', 'title', 'genre'],
+            include: { model: Song, attributes: ['id', 'title'] },
+        },
     })
 
     if (!artist) {

@@ -1,6 +1,7 @@
 // Models
-const { Artist } = require('../models/artist.model')
+const { Song } = require('../models/song.model')
 const { Album } = require('../models/album.model')
+const { Artist } = require('../models/artist.model')
 
 // Utils
 const { catchAsync } = require('../utils/catchAsync.util')
@@ -50,6 +51,7 @@ const getArtists = catchAsync(async (req, res, next) => {
         include: {
             model: Album,
             attributes: ['id', 'title', 'genre', 'imgUrl'],
+            include: { model: Song, attributes: ['id', 'title'] },
         },
     })
 
