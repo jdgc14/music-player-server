@@ -70,9 +70,19 @@ const createAlbumValidators = [
     checkValidations,
 ]
 
+const songValidators = [
+    body('title')
+        .isString()
+        .withMessage('title must be a string')
+        .isLength({ min: 3 })
+        .withMessage('title must be at least 3 characters'),
+    checkValidations,
+]
+
 module.exports = {
     createUserValidators,
     createArtistValidators,
     updateArtistValidators,
     createAlbumValidators,
+    songValidators,
 }
