@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 
 // Models
 const { User } = require('../models/user.model')
+const { Song } = require('../models/song.model')
 
 // Utils
 const { AppError } = require('../utils/appError.util')
@@ -13,8 +14,15 @@ dotenv.config()
 
 const getAllUsers = catchAsync(async (req, res, next) => {
     const users = await User.findAll({
-        attributes: { exclude: ['password'] },
+        attributes: {
+            exclude: ['password', 'status', 'createdAt', 'updatedAt'],
+        },
         where: { status: 'active' },
+        include: {
+            model: Song,
+            attributes: ['id', 'title'],
+            through: { where: { favorite: true }, attributes: [] },
+        },
     })
 
     res.status(200).json({

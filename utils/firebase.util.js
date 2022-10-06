@@ -50,11 +50,29 @@ const getArtistImg = async (artist) => {
     return imgUrl
 }
 
+const getAlbumImg = async (album) => {
+    const imgRef = ref(storage, album.imgUrl)
+
+    const imgUrl = await getDownloadURL(imgRef)
+
+    album.imgUrl = imgUrl
+
+    return album
+}
+
 const getAllArtistImg = async (artists) => {
     const artistImgPromises = artists.map(async (artist) => {
+        const albumsPromises = artist.albums.map(async (album) => {
+            return await getAlbumImg(album)
+        })
+
+        const albumsImgs = await Promise.all(albumsPromises)
+
         const imgUrl = await getArtistImg(artist)
 
         artist.imgUrl = imgUrl
+
+        artist.albums = albumsImgs
     })
 
     await Promise.all(artistImgPromises)
@@ -64,4 +82,5 @@ module.exports = {
     uploadPhoto,
     getArtistImg,
     getAllArtistImg,
+    getAlbumImg,
 }
